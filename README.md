@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+# TDD 흐름으로 투두리스트 만들기
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 세팅
 
-## Available Scripts
+```shell
+> create-react-app react-tdd-todo --template typescript
+```
 
-In the project directory, you can run:
+- 테스트 라이브러리 설치
 
-### `npm start`
+```shell
+> yarn add react-testing-library jest-dom @types/jest
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- setupTests.ts
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```ts
+import "react-testing-library/cleanup-after-each";
+import "jest-dom/extend-expect";
+```
 
-### `npm test`
+## 컴포넌트 계획
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+투두리스트를 만들기 위해서 만들어야 하는 컴포넌트를 생각해보자
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `TodoForm`: 할 일을 작성할 form이 있고 submit 이벤트가 발생하면 새로운 할 일을 추가할 수 있어야 한다.
+- `TodoItem`: 할 일을 보여주는 컴포넌트다. 클릭하면 체크박스에 체크가 되고 삭제 버튼을 클릭하면 해당 할 일이 목록에서 삭제되어야 한다.
+- `TodoList`: 할 일 목록을 보여주는 컴포넌트다. 여러개의 `TodoItem` 컴포넌트로 구성한다.
+- `TodoApp`: 위에 컴포넌트의 조합으로 할 일 목록 기능이 구현되는 컴포넌트다.
