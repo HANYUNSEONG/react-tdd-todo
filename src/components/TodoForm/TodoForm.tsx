@@ -1,6 +1,10 @@
 import { useCallback, useState } from "react";
 
-function TodoForm() {
+type Props = {
+  onSubmit: (value: string) => void;
+};
+
+function TodoForm({ onSubmit }: Props) {
   const [todoValue, setTodoValue] = useState<string>("");
   const onTodoInputChange = useCallback(
     ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -10,8 +14,18 @@ function TodoForm() {
     []
   );
 
+  const onTodoFormSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      onSubmit(todoValue);
+      setTodoValue(() => "");
+    },
+    [onSubmit, todoValue]
+  );
+
   return (
-    <form>
+    <form onSubmit={onTodoFormSubmit}>
       <input
         type="text"
         placeholder="할 일을 입력하세요"
