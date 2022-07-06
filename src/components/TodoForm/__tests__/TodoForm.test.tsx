@@ -1,43 +1,61 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import TodoForm from "../TodoForm";
 
 function renderTodoForm() {
-  render(<TodoForm />);
+  const onSubmit = jest.fn();
 
-  const confirmInput = () => {
+  render(<TodoForm onSubmit={onSubmit} />);
+
+  const todoInput = () => {
     return screen.getByPlaceholderText("할 일을 입력하세요");
   };
 
-  const confirmSubmitButton = () => {
+  const todoFormSubmitButton = () => {
     return screen.getByText("추가");
   };
 
-  const confirmInputChangeEvent = (value: string) => {
-    return userEvent.type(confirmInput(), value);
+  const todoInputChangeEvent = (value: string) => {
+    return userEvent.type(todoInput(), value);
   };
 
   return {
-    confirmInput,
-    confirmSubmitButton,
-    confirmInputChangeEvent,
+    onSubmit,
+    todoInput,
+    todoFormSubmitButton,
+    todoInputChangeEvent,
   };
 }
 
 describe("<TodoForm />", () => {
   it("할 일을 입력하는 폼에 input과 button이 있는지 확인한다.", () => {
-    const { confirmInput, confirmSubmitButton } = renderTodoForm();
+    const { todoInput, todoFormSubmitButton } = renderTodoForm();
 
-    expect(confirmInput()).toBeInTheDocument();
-    expect(confirmSubmitButton()).toBeInTheDocument();
+    expect(todoInput()).toBeVisible();
+    expect(todoFormSubmitButton()).toBeVisible();
   });
 
   it("input이 변경되는지 확인한다.", () => {
-    const { confirmInput, confirmInputChangeEvent } = renderTodoForm();
+    const { todoInput, todoInputChangeEvent } = renderTodoForm();
 
     const value = "TDD 배우기";
-    confirmInputChangeEvent(value);
+    todoInputChangeEvent(value);
 
-    expect(confirmInput()).toHaveAttribute("value", value);
+    expect(todoInput()).toHaveAttribute("value", value);
+  });
+
+  it("onSubmit을 실행한 후 input 값을 비워준다.", async () => {
+    const { onSubmit, todoInput, todoFormSubmitButton, todoInputChangeEvent } =
+      renderTodoForm();
+
+    const value = "TDD 배우기";
+    todoInputChangeEvent(value);
+
+    await waitFor(() => {
+      todoFormSubmitButton().click();
+    });
+
+    expect(onSubmit).toHaveBeenCalledWith(value);
+    expect(todoInput()).toHaveAttribute("value", "");
   });
 });
