@@ -29,6 +29,9 @@ const renderTodoItem = (todo?: Todo) => {
   };
 
   return {
+    todoProps,
+    onToggle,
+    onRemove,
     hasContent,
     hasRemoveButton,
     hasDoneCheckbox,
@@ -60,5 +63,19 @@ describe("<TodoItem />", () => {
     const { hasRemoveButton } = renderTodoItem();
 
     expect(hasRemoveButton()).toBeVisible();
+  });
+
+  it("onRemove 이벤트가 동작하는지 확인한다.", () => {
+    const { hasRemoveButton, onRemove, todoProps } = renderTodoItem();
+
+    hasRemoveButton().click();
+    expect(onRemove).toBeCalledWith(todoProps.id);
+  });
+
+  it("onToggle 이벤트가 동작하는지 확인한다.", () => {
+    const { hasContent, onToggle, todoProps } = renderTodoItem();
+
+    hasContent().click();
+    expect(onToggle).toBeCalledWith(todoProps.id);
   });
 });
