@@ -55,4 +55,10 @@ describe("<TodoItem />", () => {
 
     expect(hasDoneCheckbox()).not.toBeChecked();
   });
+
+  it("삭제 버튼이 있는지 확인한다.", () => {
+    const { hasRemoveButton } = renderTodoItem();
+
+    expect(hasRemoveButton()).toBeVisible();
+  });
 });
