@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Todo } from "types/todo";
 
 type Props = {
@@ -7,11 +8,19 @@ type Props = {
 };
 
 function TodoItem({ todo: { id, content, done }, onToggle, onRemove }: Props) {
+  const onToggleAction = useCallback(() => {
+    onToggle(id);
+  }, [id, onToggle]);
+
+  const onRemoveAction = useCallback(() => {
+    onRemove(id);
+  }, [id, onRemove]);
+
   return (
-    <li onClick={() => onToggle(id)}>
+    <li>
       <input type="checkbox" defaultChecked={done} />
-      <p>{content}</p>
-      <button onClick={() => onRemove(id)}>삭제</button>
+      <p onClick={onToggleAction}>{content}</p>
+      <button onClick={onRemoveAction}>삭제</button>
     </li>
   );
 }
