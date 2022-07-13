@@ -27,8 +27,15 @@ function renderTodoList() {
     return screen.getByText(mockTodos[0].content);
   };
 
+  const removeButton = () => {
+    return screen.getAllByText("삭제")[0];
+  };
+
   return {
+    onToggle,
+    onRemove,
     checkTodo,
+    removeButton,
   };
 }
 
@@ -37,5 +44,15 @@ describe("<TodoList />", () => {
     const { checkTodo } = renderTodoList();
 
     expect(checkTodo()).toBeInTheDocument();
+  });
+
+  it("onToggle과 onRemove 함수의 동작을 확인한다.", () => {
+    const { checkTodo, removeButton, onToggle, onRemove } = renderTodoList();
+
+    checkTodo().click();
+    expect(onToggle).toBeCalledWith(mockTodos[0].id);
+
+    removeButton().click();
+    expect(onRemove).toBeCalledWith(mockTodos[0].id);
   });
 });
