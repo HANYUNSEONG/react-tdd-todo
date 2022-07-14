@@ -9,7 +9,7 @@ type Props = {
 
 function TodoList({ todos, onToggle, onRemove }: Props) {
   return (
-    <ul data-testId="TodoList">
+    <ul data-testid="TodoList">
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}
