@@ -1,10 +1,10 @@
 import React from "react";
-import TodoForm from "./components/TodoForm";
+import TodoApp from "components/TodoApp";
 
 function App() {
   return (
     <div>
-      <TodoForm onSubmit={(data) => console.log(data)} />
+      <TodoApp />
     </div>
   );
 }
