@@ -24,39 +24,33 @@ const renderTodoItem = (todo?: Todo) => {
     return screen.getByText("삭제");
   };
 
-  const hasDoneCheckbox = () => {
-    return screen.getByRole("checkbox");
-  };
-
   return {
     todoProps,
     onToggle,
     onRemove,
     hasContent,
     hasRemoveButton,
-    hasDoneCheckbox,
   };
 };
 
 describe("<TodoItem />", () => {
   it("컴포넌트 구성이 올바른지 확인한다.", () => {
-    const { hasContent, hasRemoveButton, hasDoneCheckbox } = renderTodoItem();
+    const { hasContent, hasRemoveButton } = renderTodoItem();
 
     expect(hasContent()).toBeVisible();
     expect(hasRemoveButton()).toBeVisible();
-    expect(hasDoneCheckbox()).not.toBeChecked();
   });
 
   it("done이 true인 경우 checkbox에 체크가 되어있는지 확인한다.", () => {
-    const { hasDoneCheckbox } = renderTodoItem({ ...mockTodo, done: true });
+    const { hasContent } = renderTodoItem({ ...mockTodo, done: true });
 
-    expect(hasDoneCheckbox()).toBeChecked();
+    expect(hasContent()).toHaveStyle("text-decoration: line-through;");
   });
 
   it("done이 false인 경우 checkbox에 체크 해제되어 있는지 확인한다.", () => {
-    const { hasDoneCheckbox } = renderTodoItem({ ...mockTodo, done: false });
+    const { hasContent } = renderTodoItem({ ...mockTodo, done: false });
 
-    expect(hasDoneCheckbox()).not.toBeChecked();
+    expect(hasContent()).not.toHaveStyle("text-decoration: line-through;");
   });
 
   it("삭제 버튼이 있는지 확인한다.", () => {

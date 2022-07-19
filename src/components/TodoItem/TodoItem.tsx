@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import { Todo } from "types/todo";
 
 type Props = {
@@ -18,11 +18,15 @@ function TodoItem({ todo: { id, content, done }, onToggle, onRemove }: Props) {
 
   return (
     <li>
-      <input type="checkbox" defaultChecked={done} />
-      <p onClick={onToggleAction}>{content}</p>
+      <p
+        onClick={onToggleAction}
+        style={{ textDecoration: done ? "line-through" : "" }}
+      >
+        {content}
+      </p>
       <button onClick={onRemoveAction}>삭제</button>
     </li>
   );
 }
 
-export default TodoItem;
+export default memo(TodoItem);
