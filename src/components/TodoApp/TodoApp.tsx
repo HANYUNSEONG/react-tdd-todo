@@ -32,10 +32,22 @@ function TodoApp() {
     nextId.current += 1;
   }, []);
 
+  const onToggle = useCallback((id: number) => {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      )
+    );
+  }, []);
+
+  const onRemove = useCallback((id: number) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  }, []);
+
   return (
     <>
       <TodoForm data-testId="helloworld" onSubmit={onTodoFormSubmit} />
-      <TodoList todos={todos} onToggle={() => {}} onRemove={() => {}} />
+      <TodoList todos={todos} onToggle={onToggle} onRemove={onRemove} />
     </>
   );
 }
