@@ -25,12 +25,17 @@ function renderTodoApp() {
     return userEvent.type(todoFormInput(), value);
   };
 
+  const todoRemoveButton = () => {
+    return screen.getAllByText("삭제");
+  };
+
   return {
     todoFormButton,
     todoList,
     getTodo,
     todoFormInput,
     todoFormInputChange,
+    todoRemoveButton,
   };
 }
 
@@ -60,5 +65,35 @@ describe("<TodoApp />", () => {
     });
 
     expect(getTodo(value)).toBeInTheDocument();
+  });
+
+  it("할 일 토글 기능 동작을 확인한다.", async () => {
+    const { getTodo } = renderTodoApp();
+    const todo = getTodo("운동하기");
+
+    expect(todo).toBeInTheDocument();
+
+    await waitFor(() => {
+      todo.click();
+    });
+
+    expect(todo).toHaveStyle("text-decoration: line-through;");
+
+    await waitFor(() => {
+      todo.click();
+    });
+
+    expect(todo).not.toHaveStyle("text-decoration: line-through;");
+  });
+
+  it("할 일 삭제 기능을 확인한다.", async () => {
+    const { todoRemoveButton, getTodo } = renderTodoApp();
+    const todo = getTodo("운동하기");
+
+    await waitFor(() => {
+      todoRemoveButton()[0].click();
+    });
+
+    expect(todo).not.toBeInTheDocument();
   });
 });
